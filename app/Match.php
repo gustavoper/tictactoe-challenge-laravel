@@ -1,9 +1,30 @@
 <?php
+/**
+ * The Match Model.
+ * Here we have some match rulesets which help us to identify a winner.
+ *
+ * @category App
+ * @package  App
+ * @author   Gustavo Pereira <gustavoper@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version  "GIT: 0.1.0.0"
+ * @link     http://localhost
+ * @since    2018-11-24
+ */
 
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Match - Model implementation.
+ *
+ * @category App
+ * @package  App
+ * @author   Gustavo Pereira <gustavoper@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License]]
+ * @link     http://localhost
+ */
 class Match extends Model
 {
     /**
@@ -15,16 +36,21 @@ class Match extends Model
 
     /**
      * The exact match score
+     *
      * @var int
      */
     protected $exactMatchScore = 15;
 
     /**
+     * Player One Alias.
+     *
      * @var string
      */
     protected $playerOneAlias = "X";
 
     /**
+     * Player Two Alias.
+     *
      * @var string
      */
     protected $playerTwoAlias = "O";
@@ -36,7 +62,7 @@ class Match extends Model
      *
      * @return array
      */
-    private function getWinningCondiitons() : array
+    private function _getWinningCondiitons() : array
     {
         return [
             [8, 1, 6],
@@ -56,7 +82,7 @@ class Match extends Model
      *
      * @return array
      */
-    private function getBoardRuleset() : array
+    private function _getBoardRuleset() : array
     {
         return [0=>8, 1=>1, 2=>6, 3=>3, 4=>5, 5=>7, 6=>4, 7=>9, 8=>2];
     }
@@ -64,48 +90,48 @@ class Match extends Model
     /**
      * Get a Raw board and transforms it into a board with a ruleset
      *
-     * @param $board
+     * @param array $board A raw board (e.g [1,1,1,0,0,0,0,0,0]
      *
      * @return array
      */
-    private function formatBoardIntoRuleset($board) : array
+    private function _formatBoardIntoRuleset($board) : array
     {
         $formatedBoard = [];
-        $boardRuleset = $this->getBoardRuleset();
+        $boardRuleset = $this->_getBoardRuleset();
         $formatedBoardRow = 0;
         foreach ($boardRuleset as $index=>$value) {
             if ($index % 3 == 0) {
                 $formatedBoardRow++;
             }
             switch ($board[$index]) {
-                case 1:
-                    $formatedBoard[$formatedBoardRow][$value] = $this->playerOneAlias;
-                    break;
-                case 2:
-                    $formatedBoard[$formatedBoardRow][$value] = $this->playerTwoAlias;
-                    break;
-                default:
-                    $formatedBoard[$formatedBoardRow][$value] = "";
-                    break;
+            case 1:
+                $formatedBoard[$formatedBoardRow][$value] = $this->playerOneAlias;
+                break;
+            case 2:
+                $formatedBoard[$formatedBoardRow][$value] = $this->playerTwoAlias;
+                break;
+            default:
+                $formatedBoard[$formatedBoardRow][$value] = "";
+                break;
             }
         }
         return $formatedBoard;
     }
 
     /**
+     * Check if a given player is a winner
      *
-     *
-     * @param int   $playerScore
-     * @param array $playerStandings
+     * @param int   $playerScore     Player Score
+     * @param array $playerStandings Player Standings (marks)
      *
      * @return bool
      */
-    private function checkIfThisPlayerWon(int $playerScore, array $playerStandings)
+    private function _checkIfThisPlayerWon(int $playerScore, array $playerStandings)
     {
         if ($playerScore=== $this->exactMatchScore) {
             return true;
         }
-        $winningConditions = $this->getWinningCondiitons();
+        $winningConditions = $this->_getWinningCondiitons();
         foreach ($winningConditions as $winningCondition) {
             $playerMatchResult = array_intersect(
                 $playerStandings, $winningCondition
@@ -121,13 +147,14 @@ class Match extends Model
 
     /**
      * Find out who is the winner on a board (Player 1, Player 2 or None)
-     * @param array $board
+     *
+     * @param array $board a raw board (e.g [1,1,1,0,0,0,2,2,0]
      *
      * @return int
      */
-    protected function getWinner(array $board) : int
+    public function getWinner(array $board) : int
     {
-        $formatedBoard = $this->formatBoardIntoRuleset($board);
+        $formatedBoard = $this->_formatBoardIntoRuleset($board);
 
         $playerOneAnswers = [];
         $playerTwoAnswers = [];
@@ -147,10 +174,10 @@ class Match extends Model
                 }
             }
         }
-        if ($this->checkIfThisPlayerWon($scorePlayerOne, $playerOneAnswers)) {
+        if ($this->_checkIfThisPlayerWon($scorePlayerOne, $playerOneAnswers)) {
             return 1;
         }
-        if ($this->checkIfThisPlayerWon($scorePlayerTwo, $playerTwoAnswers)) {
+        if ($this->_checkIfThisPlayerWon($scorePlayerTwo, $playerTwoAnswers)) {
             return 2;
         }
         return 0;

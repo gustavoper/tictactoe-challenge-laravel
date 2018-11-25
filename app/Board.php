@@ -27,7 +27,7 @@ class Board extends Model
 
     public function setBoardArea($board) {
         if (empty($board)) {
-            $board = [0,0,0,0,0,0];
+            $board = [0,0,0,0,0,0,0,0,0];
         }
         return $board;
     }

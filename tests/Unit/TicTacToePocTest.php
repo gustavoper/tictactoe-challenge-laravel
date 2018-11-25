@@ -4,6 +4,8 @@
  *  These tests should be considered only to prove the concept itself (POC).
  *  You will find some redundancy here but thats a POC, don't forget.
  *
+ *  This class helped me a lot throughout the whole implementation.
+ *
  *  This solution is based on Magic Square theory
  *  http://mathworld.wolfram.com/MagicSquare.html
  *
