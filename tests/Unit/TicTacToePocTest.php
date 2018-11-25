@@ -1,7 +1,9 @@
 <?php
 /**
  *  Unit tests in order to build the logic of a tic-tac toe application
- *  These tests should be considered only to prove the concept itself.
+ *  These tests should be considered only to prove the concept itself (POC).
+ *  You will find some redundancy here but thats a POC, don't forget.
+ *
  *  This solution is based on Magic Square theory
  *  http://mathworld.wolfram.com/MagicSquare.html
  *
@@ -16,7 +18,7 @@ use Tests\TestCase;
 /**
  * @package Tests\Unit
  */
-class TicTacToeTest extends TestCase
+class TicTacToePocTest extends TestCase
 {
 
     /**
@@ -44,6 +46,9 @@ class TicTacToeTest extends TestCase
      */
     public $_maxScore;
 
+    /**
+     * @var array Winning conditions (movements that give a win)
+     */
     public $_winningConditions;
 
 
@@ -53,7 +58,7 @@ class TicTacToeTest extends TestCase
      */
     public function setUp()
     {
-        //For this example, the max score MUST be 15
+        //For this example, the max score MUST be exactly 15
         $this->_maxScore = 15;
 
         $this->_board = [
@@ -62,6 +67,9 @@ class TicTacToeTest extends TestCase
             [4 => "", 9 => "", 2 => ""]
         ];
 
+        /**
+         * Winning conditions, based on Magic Square Theory
+         */
         $this->_winningConditions = [
             [8, 1, 6],
             [3, 5, 7],
@@ -104,9 +112,9 @@ class TicTacToeTest extends TestCase
     public function testCheckWinner()
     {
         $rawBoard = [2,2,1,0,1,1,2,2,2];
-        $gabarito = [0=>8, 1=>1, 2=>6, 3=>3, 4=>5, 5=>7, 6=>4, 7=>9, 8=>2];
+        $feedback = [0=>8, 1=>1, 2=>6, 3=>3, 4=>5, 5=>7, 6=>4, 7=>9, 8=>2];
         $formatedBoardRow = 0;
-        foreach ($gabarito as $index=>$value) {
+        foreach ($feedback as $index=>$value) {
             if ($index%3==0) {
                 $formatedBoardRow++;
             }
