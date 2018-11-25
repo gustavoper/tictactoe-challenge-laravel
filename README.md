@@ -29,3 +29,5 @@ Sometimes, you get a 419 error when running Api Tests. I'll check that soon.
 
 In other times, you can get a "access denied" error when building your container on ```./setup```. 
 This can be solved modifying folder "storage" privileges.
+
+Testing coverage is not 100% but they cover some critical scenarios.
